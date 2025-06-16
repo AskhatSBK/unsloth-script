@@ -1,0 +1,4 @@
+wandb
+datasets
+unsloth
+trl

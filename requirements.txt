@@ -2,7 +2,7 @@ wandb
 datasets
 unsloth
 trl
-torch 
+# torch 
 accelerate 
 transformers
 peft 

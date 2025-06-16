@@ -11,9 +11,9 @@ hf_api = input("HUGGINGFACE API:")
 
 wandb.login(key=wandb_api)
 wandb.init(
-    project="gemma3_lora_27b",
+    project="gemma3_lora_1b",
     name="gemma3-uzbek-finetune",
-    config={"model": "gemma-3-27b", "lr": 2e-5, "epochs": 10}
+    config={"model": "gemma-3-1b", "lr": 2e-5, "epochs": 10}
 )
 
 def formatting_prompts_func(examples):
@@ -23,7 +23,7 @@ def formatting_prompts_func(examples):
 
 model, tokenizer = FastModel.from_pretrained(
     model_name = "google/gemma-3-1b-it",
-    max_seq_length = 8192, # Choose any for long context!
+    max_seq_length = 200, # Choose any for long context!
     load_in_4bit = False,  # 4 bit quantization to reduce memory
     load_in_8bit = True, # [NEW!] A bit more accurate, uses 2x memory
     full_finetuning = False, # [NEW!] We have full finetuning now!
@@ -37,8 +37,8 @@ model = FastModel.get_peft_model(
     finetune_attention_modules = True,  # Attention good for GRPO
     finetune_mlp_modules       = True,  # SHould leave on always!
 
-    r = 16,           # Larger = higher accuracy, but might overfit
-    lora_alpha = 16,  # Recommended alpha == r at least
+    r = 8,           # Larger = higher accuracy, but might overfit
+    lora_alpha = 8,  # Recommended alpha == r at least
     lora_dropout = 0,
     bias = "none",
     random_state = 42,
@@ -64,8 +64,8 @@ trainer = SFTTrainer(
     eval_dataset = val_dataset, # Can set up evaluation!
     args = SFTConfig(
         dataset_text_field = "text",
-        per_device_train_batch_size = 16,
-        gradient_accumulation_steps = 3, # Use GA to mimic batch size!
+        per_device_train_batch_size = 2,
+        gradient_accumulation_steps = 2, # Use GA to mimic batch size!
         warmup_steps = 100,
         num_train_epochs = 10, # Set this for 1 full training run.
         # max_steps = 30,

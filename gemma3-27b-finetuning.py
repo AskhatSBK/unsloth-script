@@ -4,6 +4,7 @@ from unsloth.chat_templates import get_chat_template
 from unsloth.chat_templates import train_on_responses_only
 from trl import SFTTrainer, SFTConfig
 import wandb
+import os
 
 wandb_api = input("WANDB API:")
 hf_api = input("HUGGINGFACE API:")
@@ -22,7 +23,7 @@ def formatting_prompts_func(examples):
 
 model, tokenizer = FastModel.from_pretrained(
     model_name = "google/gemma-3-1b-it",
-    max_seq_length = 4096, # Choose any for long context!
+    max_seq_length = 8192, # Choose any for long context!
     load_in_4bit = False,  # 4 bit quantization to reduce memory
     load_in_8bit = True, # [NEW!] A bit more accurate, uses 2x memory
     full_finetuning = False, # [NEW!] We have full finetuning now!
@@ -36,8 +37,8 @@ model = FastModel.get_peft_model(
     finetune_attention_modules = True,  # Attention good for GRPO
     finetune_mlp_modules       = True,  # SHould leave on always!
 
-    r = 8,           # Larger = higher accuracy, but might overfit
-    lora_alpha = 8,  # Recommended alpha == r at least
+    r = 16,           # Larger = higher accuracy, but might overfit
+    lora_alpha = 16,  # Recommended alpha == r at least
     lora_dropout = 0,
     bias = "none",
     random_state = 42,
@@ -63,19 +64,19 @@ trainer = SFTTrainer(
     eval_dataset = val_dataset, # Can set up evaluation!
     args = SFTConfig(
         dataset_text_field = "text",
-        per_device_train_batch_size = 8,
-        gradient_accumulation_steps = 8, # Use GA to mimic batch size!
-        warmup_steps = 5,
+        per_device_train_batch_size = 16,
+        gradient_accumulation_steps = 3, # Use GA to mimic batch size!
+        warmup_steps = 100,
         num_train_epochs = 10, # Set this for 1 full training run.
         # max_steps = 30,
         learning_rate = 2e-5, # Reduce to 2e-5 for long training runs
-        logging_steps = 100,
+        logging_steps = 70,
         optim = "adamw_8bit",
         weight_decay = 0.01,
         lr_scheduler_type = "linear",
         seed = 42,
         report_to = "wandb", # Use this for WandB etc
-        dataset_num_proc=2,
+        dataset_num_proc= os.cpu_count(),
         output_dir = "./checkpoints",      # Directory to save model
         save_strategy = "epoch",
         save_total_limit = 5,

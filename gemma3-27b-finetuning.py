@@ -7,7 +7,8 @@ import wandb
 import os
 
 wandb_api = input("WANDB API:")
-hf_api = input("HUGGINGFACE API:")
+hf_read_api = input("HF_read API:")
+hf_write_api = input("HF_write API:")
 
 wandb.login(key=wandb_api)
 wandb.init(
@@ -22,12 +23,12 @@ def formatting_prompts_func(examples):
    return { "text" : texts, }
 
 model, tokenizer = FastModel.from_pretrained(
-    model_name = "google/gemma-3-1b-it",
+    model_name = "google/gemma-3-27b-it",
     max_seq_length = 8192, # Choose any for long context!
     load_in_4bit = False,  # 4 bit quantization to reduce memory
     load_in_8bit = True, # [NEW!] A bit more accurate, uses 2x memory
     full_finetuning = False, # [NEW!] We have full finetuning now!
-    token = hf_api, # use one if using gated models
+    token = hf_read_api, # use one if using gated models
 )
 
 model = FastModel.get_peft_model(
@@ -70,7 +71,7 @@ trainer = SFTTrainer(
         num_train_epochs = 10, # Set this for 1 full training run.
         # max_steps = 30,
         learning_rate = 2e-5, # Reduce to 2e-5 for long training runs
-        logging_steps = 70,
+        logging_steps = 100,
         optim = "adamw_8bit",
         weight_decay = 0.01,
         lr_scheduler_type = "linear",
@@ -80,8 +81,8 @@ trainer = SFTTrainer(
         output_dir = "./checkpoints",      # Directory to save model
         save_strategy = "epoch",
         save_total_limit = 5,
-        push_to_hub=True,
-        hub_strategy="every_save",
+        # push_to_hub=True,
+        # hub_strategy="every_save",
     ),
 )
 

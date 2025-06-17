@@ -65,7 +65,7 @@ trainer = SFTTrainer(
     eval_dataset = val_dataset, # Can set up evaluation!
     args = SFTConfig(
         dataset_text_field = "text",
-        per_device_train_batch_size = 2,
+        per_device_train_batch_size = 16,
         gradient_accumulation_steps = 2, # Use GA to mimic batch size!
         warmup_steps = 100,
         num_train_epochs = 10, # Set this for 1 full training run.
@@ -80,10 +80,10 @@ trainer = SFTTrainer(
         output_dir = "./checkpoints",      # Directory to save model
         save_strategy = "epoch",
         save_total_limit = 5,
-        push_to_hub=True,
-        hub_strategy="every_save",
-        hub_token = hf_write_api,  # Use write API for pushing to HF Hub
-        hub_model_id="SayBitekhan/170625-gemma3-1b-uzbek-lora"  # Change to your model ID,
+        # push_to_hub=True,
+        # hub_strategy="every_save",
+        # hub_token = hf_write_api,  # Use write API for pushing to HF Hub
+        # hub_model_id="SayBitekhan/170625-gemma3-1b-uzbek-lora"  # Change to your model ID,
     ),
 )
 

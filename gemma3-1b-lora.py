@@ -7,7 +7,8 @@ import wandb
 import os
 
 wandb_api = input("WANDB API:")
-hf_api = input("HUGGINGFACE API:")
+hf_read_api = input("HF_read API:")
+hf_write_api = input("HF_write API:")
 
 wandb.login(key=wandb_api)
 wandb.init(
@@ -27,7 +28,7 @@ model, tokenizer = FastModel.from_pretrained(
     load_in_4bit = False,  # 4 bit quantization to reduce memory
     load_in_8bit = True, # [NEW!] A bit more accurate, uses 2x memory
     full_finetuning = False, # [NEW!] We have full finetuning now!
-    token = hf_api, # use one if using gated models
+    token = hf_read_api, # use one if using gated models
 )
 
 model = FastModel.get_peft_model(
@@ -68,7 +69,6 @@ trainer = SFTTrainer(
         gradient_accumulation_steps = 2, # Use GA to mimic batch size!
         warmup_steps = 100,
         num_train_epochs = 10, # Set this for 1 full training run.
-        # max_steps = 30,
         learning_rate = 2e-5, # Reduce to 2e-5 for long training runs
         logging_steps = 70,
         optim = "adamw_8bit",
@@ -82,6 +82,8 @@ trainer = SFTTrainer(
         save_total_limit = 5,
         push_to_hub=True,
         hub_strategy="every_save",
+        hub_token = hf_write_api,  # Use write API for pushing to HF Hub
+        hub_model_id="SayBitekhan/170625-gemma3-1b-uzbek-lora"  # Change to your model ID,
     ),
 )
 

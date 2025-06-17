@@ -14,7 +14,7 @@ wandb.login(key=wandb_api)
 wandb.init(
     project="gemma3_lora_27b",
     name="gemma3-uzbek-finetune",
-    config={"model": "gemma-3-27b", "lr": 2e-5, "epochs": 10}
+    config={"model": "gemma-3-27b", "lr": 2e-5, "epochs": 1}
 )
 
 def formatting_prompts_func(examples):
@@ -53,22 +53,22 @@ tokenizer = get_chat_template(
 dataset = load_dataset("UAzimov/uzbek-instruct-llm", split = "train")
 dataset = dataset.rename_column("messages", "conversations")
 dataset = dataset.map(formatting_prompts_func, batched = True)
-split_dataset = dataset.train_test_split(test_size=0.1, seed=42)
+# split_dataset = dataset.train_test_split(test_size=0.1, seed=42)
 
-dataset = split_dataset['train']
-val_dataset = split_dataset['test']
+dataset = dataset['train']
+# val_dataset = split_dataset['test']
 
 trainer = SFTTrainer(
     model = model,
     tokenizer = tokenizer,
     train_dataset = dataset,
-    eval_dataset = val_dataset, # Can set up evaluation!
+    eval_dataset = None, # Can set up evaluation!
     args = SFTConfig(
         dataset_text_field = "text",
         per_device_train_batch_size = 16,
-        gradient_accumulation_steps = 3, # Use GA to mimic batch size!
+        gradient_accumulation_steps = 4, # Use GA to mimic batch size!
         warmup_steps = 100,
-        num_train_epochs = 10, # Set this for 1 full training run.
+        num_train_epochs = 1, # Set this for 1 full training run.
         # max_steps = 30,
         learning_rate = 2e-5, # Reduce to 2e-5 for long training runs
         logging_steps = 100,

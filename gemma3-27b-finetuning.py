@@ -55,7 +55,7 @@ dataset = dataset.rename_column("messages", "conversations")
 dataset = dataset.map(formatting_prompts_func, batched = True)
 # split_dataset = dataset.train_test_split(test_size=0.1, seed=42)
 
-dataset = dataset['train']
+# dataset = dataset['train']
 # val_dataset = split_dataset['test']
 
 trainer = SFTTrainer(

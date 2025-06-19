@@ -1,7 +1,7 @@
 from datasets import load_dataset
 from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig, TrainingArguments
 from peft import LoraConfig, get_peft_model
-from trl import SFTTrainer
+from trl import SFTTrainer, SFTConfig
 import wandb
 import os
 import torch
@@ -68,32 +68,33 @@ dataset = load_dataset("UAzimov/uzbek-instruct-llm", split = "train")
 dataset = dataset.rename_column("messages", "conversations")
 dataset = dataset.map(formatting_prompts_func, batched = True)
 
-training_args = TrainingArguments(
-    output_dir="./checkpoints",
-    per_device_train_batch_size=16,
-    gradient_accumulation_steps=4,
-    warmup_steps=100,
-    num_train_epochs=7,
-    learning_rate=2e-5,
-    logging_steps=100,
-    optim="adamw_8bit",
-    weight_decay=0.01,
-    lr_scheduler_type="linear",
-    seed=42,
-    report_to="wandb",
-    save_strategy="epoch",
-    save_total_limit=5,
-    bf16=True, # Use bfloat16 for training
-)
-
 trainer = SFTTrainer(
-    model=model,
-    # tokenizer=tokenizer,
-    train_dataset=dataset,
-    eval_dataset=None,
-    args=training_args,
-    dataset_text_field="text",
-    max_seq_length=8192, # This was from FastModel, now passed to SFTTrainer
+    model = model,
+    tokenizer = tokenizer,
+    train_dataset = dataset,
+    eval_dataset = None, # Can set up evaluation!
+    args = SFTConfig(
+        dataset_text_field = "text",
+        per_device_train_batch_size = 16,
+        gradient_accumulation_steps = 4, # Use GA to mimic batch size!
+        warmup_steps = 100,
+        num_train_epochs = 7, # Set this for 1 full training run.
+        learning_rate = 2e-5, #  Reduce to 2e-5 for long training runs
+        logging_steps = 100,
+        optim = "adamw_8bit",
+        weight_decay = 0.01,
+        lr_scheduler_type = "linear",
+        seed = 42,
+        report_to = "wandb", # Use this for WandB etc
+        dataset_num_proc= os.cpu_count(),
+        output_dir = "./checkpoints",      # Directory to save model
+        save_strategy = "epoch",
+        save_total_limit = 5,
+        bf16 = True,  # Use bf16 for better performance
+        # use_cache = False,
+        # push_to_hub=True,
+        # hub_strategy="every_save",
+    ),
 )
 
 trainer.train()

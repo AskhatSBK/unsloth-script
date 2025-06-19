@@ -88,7 +88,7 @@ training_args = TrainingArguments(
 
 trainer = SFTTrainer(
     model=model,
-    tokenizer=tokenizer,
+    # tokenizer=tokenizer,
     train_dataset=dataset,
     eval_dataset=None,
     args=training_args,

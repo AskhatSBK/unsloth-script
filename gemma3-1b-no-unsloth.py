@@ -35,7 +35,7 @@ model = AutoModelForCausalLM.from_pretrained(
     quantization_config=bnb_config,
     device_map="auto",
     token=hf_read_api,
-)
+).to("cuda")
 
 tokenizer = AutoTokenizer.from_pretrained(
     model_name,

@@ -80,6 +80,7 @@ trainer = SFTTrainer(
         output_dir = "./checkpoints",      # Directory to save model
         save_strategy = "epoch",
         save_total_limit = 5,
+        bf16 = True,  # Use bf16 for better performance
         # use_cache = False,
         # push_to_hub=True,
         # hub_strategy="every_save",

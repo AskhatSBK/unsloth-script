@@ -5,10 +5,31 @@ from unsloth.chat_templates import train_on_responses_only
 from trl import SFTTrainer, SFTConfig
 import wandb
 import os
+from huggingface_hub import HfApi, set_hf_api, login
+import requests
 
 wandb_api = input("WANDB API:")
 hf_read_api = input("HF_read API:")
 hf_write_api = input("HF_write API:")
+
+# Настройка кастомного сессии с увеличенным таймаутом
+session = requests.Session()
+adapter = requests.adapters.HTTPAdapter(max_retries=3)
+session.mount("https://", adapter)
+session.mount("http://", adapter)
+
+# Увеличим таймаут до 60 секунд
+session.request = lambda method, url, **kwargs: requests.Session().request(
+    method, url, timeout=60, **kwargs
+)
+
+# Устанавливаем HfApi с кастомным session
+custom_api = HfApi(session=session)
+set_hf_api(custom_api)
+
+# (опционально) авторизация
+login(token=hf_read_api)
+
 
 wandb.login(key=wandb_api)
 wandb.init(

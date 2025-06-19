@@ -23,7 +23,7 @@ def formatting_prompts_func(examples):
    return { "text" : texts, }
 
 model, tokenizer = FastModel.from_pretrained(
-    model_name = "google/gemma-3-27b-it",
+    model_name = "unsloth/gemma-3-27b-it",
     max_seq_length = 8192, # Choose any for long context!
     load_in_4bit = False,  # 4 bit quantization to reduce memory
     load_in_8bit = True, # [NEW!] A bit more accurate, uses 2x memory

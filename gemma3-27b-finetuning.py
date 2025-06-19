@@ -12,9 +12,9 @@ hf_write_api = input("HF_write API:")
 
 wandb.login(key=wandb_api)
 wandb.init(
-    project="gemma3_lora_27b",
+    project="gemma3_lora_12b",
     name="gemma3-uzbek-finetune",
-    config={"model": "gemma-3-27b", "lr": 2e-5, "epochs": 7}
+    config={"model": "gemma-3-12b", "lr": 2e-5, "epochs": 7}
 )
 
 def formatting_prompts_func(examples):
@@ -23,7 +23,7 @@ def formatting_prompts_func(examples):
    return { "text" : texts, }
 
 model, tokenizer = FastModel.from_pretrained(
-    model_name = "unsloth/gemma-3-27b-it",
+    model_name = "unsloth/gemma-3-12b-it",
     max_seq_length = 8192, # Choose any for long context!
     load_in_4bit = False,  # 4 bit quantization to reduce memory
     load_in_8bit = True, # [NEW!] A bit more accurate, uses 2x memory
@@ -65,7 +65,7 @@ trainer = SFTTrainer(
     eval_dataset = None, # Can set up evaluation!
     args = SFTConfig(
         dataset_text_field = "text",
-        per_device_train_batch_size = 14,
+        per_device_train_batch_size = 16,
         gradient_accumulation_steps = 4, # Use GA to mimic batch size!
         warmup_steps = 100,
         num_train_epochs = 7, # Set this for 1 full training run.

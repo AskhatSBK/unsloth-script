@@ -12,9 +12,9 @@ hf_write_api = input("HF_write API:")
 
 wandb.login(key=wandb_api)
 wandb.init(
-    project="gemma3_lora_12b",
+    project="gemma3_lora_27b",
     name="gemma3-uzbek-finetune",
-    config={"model": "gemma-3-12b", "lr": 2e-5, "epochs": 7}
+    config={"model": "gemma-3-27b", "lr": 2e-5, "epochs": 7}
 )
 
 def formatting_prompts_func(examples):
@@ -88,10 +88,10 @@ trainer = SFTTrainer(
 )
 
 
-trainer = train_on_responses_only(
-    trainer,
-    instruction_part = "<start_of_turn>user\n",
-    response_part = "<start_of_turn>model\n",
-)
+# trainer = train_on_responses_only(
+#     trainer,
+#     instruction_part = "<start_of_turn>user\n",
+#     response_part = "<start_of_turn>model\n",
+# )
 
 trainer_stats = trainer.train()

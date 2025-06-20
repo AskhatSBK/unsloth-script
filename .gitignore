@@ -4,6 +4,5 @@ unsloth_compiled_cache
 gemma3.py
 token_count.py
 gemma3-1b-lora.py
-gemma3-1b-no-unsloth.py
-gemma3-27b-no-unsloth.py
-memory_use_calculator.ipynb
+1b-no-unsloth.py
+27b-no-unsloth.py

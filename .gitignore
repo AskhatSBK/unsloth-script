@@ -1,5 +1,9 @@
 wandb
 checkpoints
 unsloth_compiled_cache
-gemma3-no-unsloth.py
+gemma3.py
 token_count.py
+gemma3-1b-lora.py
+gemma3-1b-no-unsloth.py
+gemma3-27b-no-unsloth.py
+memory_use_calculator.ipynb

@@ -24,9 +24,9 @@ def formatting_prompts_func(examples):
 
 model, tokenizer = FastModel.from_pretrained(
     model_name = "google/gemma-3-27b-it",
-    max_seq_length = 8192, # Choose any for long context!
-    load_in_4bit = False,  # 4 bit quantization to reduce memory
-    load_in_8bit = True, # [NEW!] A bit more accurate, uses 2x memory
+    max_seq_length = 4096, # Choose any for long context!
+    load_in_4bit = True,  # 4 bit quantization to reduce memory
+    load_in_8bit = False, # [NEW!] A bit more accurate, uses 2x memory
     full_finetuning = False, # [NEW!] We have full finetuning now!
     token = hf_read_api, # use one if using gated models
 )

@@ -20,7 +20,7 @@ wandb.init(
 def formatting_prompts_func(examples):
    convos = examples["conversations"]
    texts = [tokenizer.apply_chat_template(convo, tokenize = False, add_generation_prompt = False).removeprefix('<bos>') for convo in convos]
-   return { "text" : texts, }
+   return { "text" : texts,}
 
 model, tokenizer = FastModel.from_pretrained(
     model_name = "google/gemma-3-27b-it",
@@ -80,7 +80,7 @@ trainer = SFTTrainer(
         output_dir = "./checkpoints",      # Directory to save model
         save_strategy = "epoch",
         save_total_limit = 5,
-        bf16 = True,  # Use bf16 for better performance
+        # bf16 = True,  # Use bf16 for better performance
         # use_cache = False,
         # push_to_hub=True,
         # hub_strategy="every_save",

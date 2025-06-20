@@ -61,7 +61,7 @@ dataset = dataset.map(formatting_prompts_func, batched = True)
 trainer = SFTTrainer(
     model = model,
     tokenizer = tokenizer,
-    train_dataset = dataset,
+    train_dataset = dataset,    
     eval_dataset = None, # Can set up evaluation!
     args = SFTConfig(
         dataset_text_field = "text",

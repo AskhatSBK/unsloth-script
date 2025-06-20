@@ -1,8 +1,8 @@
-    wandb
-    datasets
-    unsloth
-    trl
-    accelerate 
-    transformers
-    peft 
-    bitsandbytes
+wandb
+datasets
+unsloth
+trl
+accelerate 
+transformers
+peft 
+bitsandbytes

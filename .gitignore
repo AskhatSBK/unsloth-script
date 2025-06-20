@@ -1,2 +1,5 @@
 wandb
+checkpoints
 unsloth_compiled_cache
+gemma3-no-unsloth.py
+token_count.py

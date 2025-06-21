@@ -14,7 +14,7 @@ wandb.login(key=wandb_api)
 wandb.init(
     project="gemma3_lora_27b",
     name="gemma3-uzbek-finetune",
-    config={"model": "gemma-3-27b", "lr": 2e-5, "epochs": 7}
+    config={"model": "gemma-3-27b", "lr": 2e-5, "epochs": 8}
 )
 
 def formatting_prompts_func(examples):
@@ -65,7 +65,7 @@ trainer = SFTTrainer(
     eval_dataset = None, # Can set up evaluation!
     args = SFTConfig(
         dataset_text_field = "text",
-        per_device_train_batch_size = 4,
+        per_device_train_batch_size = 2,
         gradient_accumulation_steps = 1, # Use GA to mimic batch size!
         warmup_steps = 100,
         num_train_epochs = 8, # Set this for 1 full training run.

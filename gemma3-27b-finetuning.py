@@ -52,7 +52,7 @@ tokenizer = get_chat_template(
 
 dataset = load_dataset("UAzimov/uzbek-instruct-llm", split = "train")
 dataset = dataset.rename_column("messages", "conversations")
-# dataset = dataset.map(formatting_prompts_func, batched = True)
+dataset = dataset.map(formatting_prompts_func, batched = True)
 # split_dataset = dataset.train_test_split(test_size=0.1, seed=42)
 
 # dataset = dataset['train']
@@ -64,7 +64,7 @@ trainer = SFTTrainer(
     train_dataset = dataset,
     eval_dataset = None, # Can set up evaluation!
     args = SFTConfig(
-        # dataset_text_field = "text",
+        dataset_text_field = "text",
         per_device_train_batch_size = 4,
         gradient_accumulation_steps = 2, # Use GA to mimic batch size!
         warmup_steps = 100,
@@ -88,10 +88,10 @@ trainer = SFTTrainer(
 )
 
 
-# trainer = train_on_responses_only(
-#     trainer,
-#     instruction_part = "<start_of_turn>user\n",
-#     response_part = "<start_of_turn>model\n",
-# )
+trainer = train_on_responses_only(
+    trainer,
+    instruction_part = "<start_of_turn>user\n",
+    response_part = "<start_of_turn>model\n",
+)
 
 trainer_stats = trainer.train()

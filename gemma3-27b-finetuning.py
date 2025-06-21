@@ -25,8 +25,8 @@ def formatting_prompts_func(examples):
 model, tokenizer = FastModel.from_pretrained(
     model_name = "google/gemma-3-27b-it",
     max_seq_length = 4096, # Choose any for long context!
-    load_in_4bit = True,  # 4 bit quantization to reduce memory
-    load_in_8bit = False, # [NEW!] A bit more accurate, uses 2x memory
+    load_in_4bit = False,  # 4 bit quantization to reduce memory
+    load_in_8bit = True, # [NEW!] A bit more accurate, uses 2x memory
     full_finetuning = False, # [NEW!] We have full finetuning now!
     token = hf_read_api, # use one if using gated models
 )
@@ -65,10 +65,10 @@ trainer = SFTTrainer(
     eval_dataset = None, # Can set up evaluation!
     args = SFTConfig(
         dataset_text_field = "text",
-        per_device_train_batch_size = 4,
-        gradient_accumulation_steps = 2, # Use GA to mimic batch size!
+        per_device_train_batch_size = 16,
+        gradient_accumulation_steps = 4, # Use GA to mimic batch size!
         warmup_steps = 100,
-        num_train_epochs = 7, # Set this for 1 full training run.
+        num_train_epochs = 8, # Set this for 1 full training run.
         learning_rate = 2e-5, #  Reduce to 2e-5 for long training runs
         logging_steps = 100,
         optim = "adamw_8bit",

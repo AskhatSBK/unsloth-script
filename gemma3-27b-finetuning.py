@@ -38,8 +38,8 @@ model = FastModel.get_peft_model(
     finetune_attention_modules = True,  # Attention good for GRPO
     finetune_mlp_modules       = True,  # SHould leave on always!
 
-    r = 16,           # Larger = higher accuracy, but might overfit
-    lora_alpha = 16,  # Recommended alpha == r at least
+    r = 16,           # Larger = higher accuracy, but might overfit  #По хорошему увелить ранк до одного процента от всех рангов gemma-3-27b
+    lora_alpha = 16,  # Recommended alpha == r at least   
     lora_dropout = 0,
     bias = "none",
     random_state = 42,

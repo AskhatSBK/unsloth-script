@@ -22,7 +22,7 @@ tokenizer = AutoTokenizer.from_pretrained(base_model_id)
 model = PeftModel.from_pretrained(model, lora_path)
 model = model.merge_and_unload()
 
-# Сохраняем слитую модель
+# Сохраняем слитую модель   
 save_path = os.path.join(output_base, os.path.basename(lora_path))
 model.save_pretrained(save_path, safe_serialization=True)
 tokenizer.save_pretrained(save_path)

@@ -1,11 +1,22 @@
-unsloth==2025.5.8
-unsloth-zoo==2025.5.8
-torch>=2.0.0
-transformers==4.51.3
-datasets>=2.14.0
-trl>=0.7.4
-accelerate==1.7.0
-bitsandbytes>=0.41.0
-scipy>=1.11.0
-click>=8.0.0  # Required by wandb/trl
-wandb>=0.15.0  # Optional but good to have explicitly listed
+# unsloth==2025.5.8
+# unsloth-zoo==2025.5.8
+# torch>=2.0.0
+# transformers==4.51.3
+# datasets>=2.14.0
+# trl>=0.7.4
+# accelerate==1.7.0
+# bitsandbytes>=0.41.0
+# scipy>=1.11.0
+# click>=8.0.0  # Required by wandb/trl
+# wandb>=0.15.0  # Optional but good to have explicitly listed
+unsloth
+unsloth-zoo
+torch
+transformers
+datasets
+trl
+accelerate
+bitsandbytes
+scipy
+click
+wandb

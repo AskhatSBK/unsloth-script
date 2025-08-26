@@ -12,9 +12,9 @@ hf_write_api = input("HF_write API:")
 
 wandb.login(key=wandb_api)
 wandb.init(
-    project="gemma3_lora_27b",
+    project="v1.1-gemma-3",
     name="gemma3-uzbek-finetune",
-    config={"model": "gemma-3-27b", "lr": 2e-5, "epochs": 8}
+    config={"model": "gemma-3-27b-lora-8bit", "lr": 2e-5, "epochs": 8}
 )
 
 def formatting_prompts_func(examples):

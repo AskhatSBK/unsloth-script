@@ -17,6 +17,9 @@ wandb.init(
     config={"model": "gemma-3-27b-lora-8bit", "lr": 2e-5, "epochs": 8}
 )
 
+def formatting_func(example):
+    return {"text": example["conversations"]}
+
 def formatting_prompts_func(examples):
    convos = examples["conversations"]
    texts = [tokenizer.apply_chat_template(convo, tokenize = False, add_generation_prompt = False).removeprefix('<bos>') for convo in convos]
@@ -62,6 +65,7 @@ trainer = SFTTrainer(
     tokenizer = tokenizer,
     train_dataset = dataset,
     eval_dataset = None, # Can set up evaluation!
+    formatting_func=formatting_func,
     args = SFTConfig(
         dataset_text_field = "text",
         per_device_train_batch_size = 2,

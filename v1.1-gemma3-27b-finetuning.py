@@ -54,7 +54,7 @@ tokenizer = get_chat_template(
 )
 
 dataset = load_dataset("shaipro/uz_large", split = "train")
-dataset = dataset.map(formatting_prompts_func, batched = True)
+# dataset = dataset.map(formatting_prompts_func, batched = True)
 # split_dataset = dataset.train_test_split(test_size=0.1, seed=42)
 
 # dataset = dataset['train']
@@ -70,10 +70,10 @@ trainer = SFTTrainer(
         dataset_text_field = "text",
         per_device_train_batch_size = 2,
         gradient_accumulation_steps = 8, # Use GA to mimic batch size!
-        warmup_steps = "epoch",
+        warmup_steps = 500,
         num_train_epochs = 8, # Set this for 1 full training run.
         learning_rate = 2e-5, #  Reduce to 2e-5 for long training runs
-        logging_steps = "epoch",
+        logging_strategy = "epoch",
         optim = "adamw_8bit",
         weight_decay = 0.01,
         lr_scheduler_type = "linear",

@@ -51,7 +51,7 @@ tokenizer = get_chat_template(
 )
 
 dataset = load_dataset("shaipro/uz_large", split = "train")
-dataset = dataset.map(formatting_prompts_func, batched = True)
+# dataset = dataset.map(formatting_prompts_func, batched = True)
 # split_dataset = dataset.train_test_split(test_size=0.1, seed=42)
 
 # dataset = dataset['train']
